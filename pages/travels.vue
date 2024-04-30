@@ -1,8 +1,10 @@
 <script setup lang="ts">
-const { data, refresh } = await useFetch('/api/travel')
+import type { Travel } from '@/types/travel';
+
+const { data, refresh } = await useFetch<Travel[]>('/api/travel')
 
 const columns = [{
-  key: 'pictureURL',
+  key: 'pictureUrl',
   label: 'Picture'
 }, {
   key: 'name',
@@ -20,6 +22,18 @@ const columns = [{
   { key: 'actions' }
 ]
 
+const removeTravel = async (id: number) => {
+  try {
+    await $fetch('/api/travel', {
+      method: "DELETE",
+      body: { id }
+    })
+    refresh()
+  } catch (err) {
+    alert(`Error adding new travel ${err}`)
+  }
+}
+
 const actions = (row: { id: number }) => [
   [{
     label: 'Edit',
@@ -27,34 +41,34 @@ const actions = (row: { id: number }) => [
     click: () => console.log('Edit', row.id)
   }], [{
     label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid'
+    icon: 'i-heroicons-trash-20-solid',
+    click: () => removeTravel(row.id)
   }]
 ]
 
-const q = ref('')
+const query = ref('')
 
 const isAddTravelModalOpen = ref(false)
 const isTableLoading = ref(false)
 
 const filteredRows = computed(() => {
-  if (!q.value) {
+  if (!query.value) {
     return data.value
   }
 
-  return data.value.filter((item) => {
+  return data.value.filter((item: Travel) => {
     return Object.values(item).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase())
+      return String(value).toLowerCase().includes(query.value.toLowerCase())
     })
   })
 })
 </script>
 
 <template>
-  <pre>{{ data }}</pre>
   <div>
     <NewTravelModal v-model="isAddTravelModalOpen" @submit="refresh" />
     <div class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-      <UInput v-model="q" placeholder="Filter people..." />
+      <UInput v-model="query" placeholder="Filter travel..." />
       <UButton @click="isAddTravelModalOpen = true">Add new travel</UButton>
     </div>
     
