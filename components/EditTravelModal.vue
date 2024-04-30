@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Travel } from "@/types/travel";
 
-const isModalOpen = defineModel();
+const isModalOpen = defineModel<boolean>();
 
 defineProps<{ travel: Travel }>();
 const emit = defineEmits<{ "travel-edit": () => void }>();
