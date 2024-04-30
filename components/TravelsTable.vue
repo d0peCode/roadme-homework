@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { format } from 'date-fns'
 import type { Travel } from '@/types/travel';
 import { defineEmits } from '@vue/runtime-core';
 
@@ -13,8 +14,8 @@ const columns = [
   { key: 'picture', label: 'Picture' },
   { key: 'name', label: 'Name of the travel' },
   { key: 'description', label: 'Description', },
-  { key: 'departureDate', label: 'Date of departure' },
-  { key: 'returnDate', label: 'Date of return' },
+  { key: 'dates.start', label: 'Date of departure' },
+  { key: 'dates.end', label: 'Date of return' },
   { key: 'price', label: 'Price per person' },
   { key: 'rating', label: 'Avg. rating' },
   { key: 'actions' }
@@ -36,7 +37,7 @@ const removeTravel = async (id: number) => {
       method: "DELETE",
       body: { id }
     })
-    emit('remove-travel')
+    emit('travel-remove')
   } catch (err) {
     alert(`Error adding new travel ${err}`)
   }
@@ -81,6 +82,12 @@ const filteredRows = computed(() => {
   >
     <template #picture-data="{ row }">
       {{ row.picture }}
+    </template>
+    <template #dates.start-data="{ row }">
+      {{ format(row.dates.start, 'd MMM, yyy') }}
+    </template>
+    <template #dates.end-data="{ row }">
+      {{ format(row.dates.end, 'd MMM, yyy') }}
     </template>
     <template #name-data="{ row }">
       <p class="text-wrap">
