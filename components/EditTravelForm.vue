@@ -11,10 +11,10 @@ const state = reactive({ ...props.travel })
 const schema = z.object({
   name: z.string().min(4),
   picture: z.string().min(1),
-  dates: z.object({
-    start: z.date(),
-    end: z.date(),
-  }),
+  // dates: z.object({
+  //   start: z.date(),
+  //   end: z.date(),
+  // }),
   description: z.string().min(10),
   price: z.number(),
   rating: z.number()
@@ -25,6 +25,7 @@ type Schema = z.infer<typeof schema>
 const form = ref()
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
+  console.log('submit')
   try {
     await $fetch('/api/travel', {
       method: "PUT",
@@ -43,9 +44,9 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
       <UInput v-model="state.name" />
     </UFormGroup>
 
-    <UFormGroup name="dates" label="Date of departure & return">
-      <DatePickerRange v-model="state.dates" />
-    </UFormGroup>
+<!--    <UFormGroup name="dates" label="Date of departure & return">-->
+<!--      <DatePickerRange v-model="state.dates" />-->
+<!--    </UFormGroup>-->
 
     <UFormGroup name="picture" label="Picture (Provide valid URL to photo)">
       <UInput v-model="state.picture" />

@@ -48,7 +48,6 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
       <UInput v-model="state.name" />
     </UFormGroup>   
     
-    {{state.dates}}
     <UFormGroup name="dates" label="Date of departure & return">
       <DatePickerRange v-model="state.dates" />
     </UFormGroup>

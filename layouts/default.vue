@@ -2,7 +2,7 @@
   <div>
     <AppNav />
 
-    <UContainer>
+    <UContainer class="max-w-[1920px]">
       <UCard class="mt-10 mb-10">
         <slot />
       </UCard>

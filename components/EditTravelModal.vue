@@ -19,7 +19,7 @@ function travelEdited () {
     </div>
     
     <div class="p-4">
-      <EditTravelForm :travel="travel" @travel-add="travelEdited" />
+      <EditTravelForm :travel="travel" @travel-edit="travelEdited" />
     </div>
   </UModal>
 </template>
