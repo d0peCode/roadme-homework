@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import type { Travel } from '@/types/travel';
+
 const isModalOpen = defineModel()
 
-const props = defineProps<{ 'travel': void }>()
-const emit = defineEmits<{ 'travel-add': void }>()
+const props = defineProps<{ 'travel': Travel }>()
+const emit = defineEmits<{ 'travel-edit': () => void }>()
 
-function newTravelAdded () {
-  console.log('newTravelAdded')
+function travelEdited () {
   isModalOpen.value = false
-  emit('travel-add')
+  emit('travel-edit')
 }
 </script>
 
@@ -18,7 +19,7 @@ function newTravelAdded () {
     </div>
 
     <div class="p-4">
-      <NewTravelForm @travel-add="newTravelAdded" />
+      <EditTravelForm :travel="travel" @travel-add="travelEdited" />
     </div>
   </UModal>
 </template>

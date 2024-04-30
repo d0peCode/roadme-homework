@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const isModalOpen = defineModel()
+const isModalOpen = defineModel<boolean>()
 
-const emit = defineEmits<{ 'travel-add': void }>()
+const emit = defineEmits<{ 'travel-add': () => void }>()
 
 function newTravelAdded () {
-  console.log('newTravelAdded')
   isModalOpen.value = false
   emit('travel-add')  
 }

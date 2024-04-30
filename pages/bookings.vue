@@ -107,7 +107,7 @@ const filteredRows = computed(() => {
         :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
         :progress="{ color: 'primary', animation: 'carousel' }"
     >
-      <template #picture-data="{ column, row }">
+      <template #picture-data="{ row }">
         {{  row }}
       </template>
       <template #actions-data="{ row }">

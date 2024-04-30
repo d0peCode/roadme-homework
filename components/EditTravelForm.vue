@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
+import type { Travel } from '@/types/travel';
 
-const emit = defineEmits<{ 'travel-add': () => void }>()
+const props = defineProps<{ travel: Travel }>()
+const emit = defineEmits<{ 'travel-edit': () => void }>()
 
-const state = reactive({
-  name: undefined,
-  picture: undefined,
-  dates: undefined,
-  description: undefined,
-  price: undefined,
-  rating: undefined
-})
+const state = reactive(props.travel)
 
 const schema = z.object({
   name: z.string().min(4),
@@ -32,10 +27,10 @@ const form = ref()
 async function onSubmit (event: FormSubmitEvent<Schema>) {
   try {
     await $fetch('/api/travel', {
-      method: "POST",
+      method: "PUT",
       body: event.data
     })
-    emit('travel-add')
+    emit('travel-edit')
   } catch (err) {
     alert(`Error adding new travel ${err}`)
   }
@@ -46,8 +41,8 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
   <UForm ref="form" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup name="name" label="Name of the travel">
       <UInput v-model="state.name" />
-    </UFormGroup>   
-    
+    </UFormGroup>
+
     <UFormGroup name="dates" label="Date of departure & return">
       <DatePickerRange v-model="state.dates" />
     </UFormGroup>
@@ -59,7 +54,7 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
     <UFormGroup name="description" label="Description">
       <UTextarea v-model="state.description" />
     </UFormGroup>
-    
+
     <UFormGroup name="price" label="Price per person">
       <UInput v-model.number="state.price">
         <template #trailing>

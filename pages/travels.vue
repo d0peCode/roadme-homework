@@ -64,7 +64,7 @@ const filteredRows = computed(() => {
 <template>
   <div>
     <NewTravelModal v-model="isAddTravelModalOpen" @travel-add="refresh" />
-    <EditTravelModal v-model="isEditTravelModalOpen" :travel="editTravelData" @travel-edit="refresh" />
+    <EditTravelModal v-if="editTravelData" v-model="isEditTravelModalOpen" :travel="editTravelData" @travel-edit="refresh" />
     <div class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="query" placeholder="Filter travel..." />
       <UButton @click="isAddTravelModalOpen = true">Add new travel</UButton>
