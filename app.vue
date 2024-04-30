@@ -1,18 +1,18 @@
 <script setup lang="ts">
-const { title, description } = useAppConfig()
+const { title, description } = useAppConfig();
 
 useHead({
   titleTemplate: (titleChunk: string) => {
-    return titleChunk ? `${titleChunk} - ${title}` : title
+    return titleChunk ? `${titleChunk} - ${title}` : title;
   },
   meta: [
     {
-      hid: 'description',
-      name: 'description',
+      hid: "description",
+      name: "description",
       content: description,
     },
   ],
-})
+});
 </script>
 <template>
   <Html lang="en" />

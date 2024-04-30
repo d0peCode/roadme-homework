@@ -6,6 +6,6 @@
       <UCard class="mt-10 mb-10">
         <slot />
       </UCard>
-    </UContainer>  
+    </UContainer>
   </div>
 </template>

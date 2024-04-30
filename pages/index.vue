@@ -17,6 +17,10 @@
     </ul>
     <p>Use navigation bar on top to check out two available pages.</p>
     <p>I hope you like it! :)</p>
-    <nuxt-link to="/travels" class="flex items-center justify-center rounded mt-4 w-24 h-10 text-white font-bold italic text-lg bg-gradient-to-r from-lime-500 to-blue-500 hover:from-pink-500 hover:to-yellow-500">Start</nuxt-link>  
+    <nuxt-link
+      to="/travels"
+      class="flex items-center justify-center rounded mt-4 w-24 h-10 text-white font-bold italic text-lg bg-gradient-to-r from-lime-500 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
+      >Start</nuxt-link
+    >
   </main>
 </template>

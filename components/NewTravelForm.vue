@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { z } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
+import { z } from "zod";
+import type { FormSubmitEvent } from "#ui/types";
 
-const emit = defineEmits<{ 'travel-add': () => void }>()
+const emit = defineEmits<{ "travel-add": () => void }>();
 
 const state = reactive({
   name: undefined,
@@ -10,8 +10,8 @@ const state = reactive({
   dates: undefined,
   description: undefined,
   price: undefined,
-  rating: undefined
-})
+  rating: undefined,
+});
 
 const schema = z.object({
   name: z.string().min(4),
@@ -22,32 +22,38 @@ const schema = z.object({
   }),
   description: z.string().min(10),
   price: z.number(),
-  rating: z.number()
-})
+  rating: z.number(),
+});
 
-type Schema = z.infer<typeof schema>
+type Schema = z.infer<typeof schema>;
 
-const form = ref()
+const form = ref();
 
-async function onSubmit (event: FormSubmitEvent<Schema>) {
+async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
-    await $fetch('/api/travel', {
+    await $fetch("/api/travel", {
       method: "POST",
-      body: event.data
-    })
-    emit('travel-add')
+      body: event.data,
+    });
+    emit("travel-add");
   } catch (err) {
-    alert(`Error adding new travel ${err}`)
+    alert(`Error adding new travel ${err}`);
   }
 }
 </script>
 
 <template>
-  <UForm ref="form" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+  <UForm
+    ref="form"
+    :schema="schema"
+    :state="state"
+    class="space-y-4"
+    @submit="onSubmit"
+  >
     <UFormGroup name="name" label="Name of the travel">
       <UInput v-model="state.name" />
-    </UFormGroup>   
-    
+    </UFormGroup>
+
     <UFormGroup name="dates" label="Date of departure & return">
       <DatePickerRange v-model="state.dates" />
     </UFormGroup>
@@ -59,7 +65,7 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
     <UFormGroup name="description" label="Description">
       <UTextarea v-model="state.description" />
     </UFormGroup>
-    
+
     <UFormGroup name="price" label="Price per person">
       <UInput v-model.number="state.price">
         <template #trailing>
@@ -72,9 +78,7 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
       <URange v-model="state.rating" />
     </UFormGroup>
 
-    <UButton type="submit">
-      Submit
-    </UButton>
+    <UButton type="submit"> Submit </UButton>
 
     <UButton variant="outline" class="ml-2" @click="form.clear()">
       Clear

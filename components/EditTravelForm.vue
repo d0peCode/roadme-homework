@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { z } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
-import type { Travel } from '@/types/travel';
+import { z } from "zod";
+import type { FormSubmitEvent } from "#ui/types";
+import type { Travel } from "@/types/travel";
 
-const props = defineProps<{ travel: Travel }>()
-const emit = defineEmits<{ 'travel-edit': () => void }>()
+const props = defineProps<{ travel: Travel }>();
+const emit = defineEmits<{ "travel-edit": () => void }>();
 
-const state = reactive({ ...props.travel })
+const state = reactive({ ...props.travel });
 
 const schema = z.object({
   name: z.string().min(4),
   picture: z.string().min(1),
   description: z.string().min(10),
   price: z.number(),
-  rating: z.number()
-})
+  rating: z.number(),
+});
 
-type Schema = z.infer<typeof schema>
+type Schema = z.infer<typeof schema>;
 
-const form = ref()
+const form = ref();
 
-async function onSubmit (event: FormSubmitEvent<Schema>) {
-  console.log('submit')
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  console.log("submit");
   try {
-    await $fetch('/api/travel', {
+    await $fetch("/api/travel", {
       method: "PUT",
-      body: event.data
-    })
-    emit('travel-edit')
+      body: event.data,
+    });
+    emit("travel-edit");
   } catch (err) {
-    alert(`Error adding new travel ${err}`)
+    alert(`Error adding new travel ${err}`);
   }
 }
 </script>
 
 <template>
-  <UForm ref="form" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+  <UForm
+    ref="form"
+    :schema="schema"
+    :state="state"
+    class="space-y-4"
+    @submit="onSubmit"
+  >
     <UFormGroup name="name" label="Name of the travel">
       <UInput v-model="state.name" />
     </UFormGroup>
@@ -64,9 +70,7 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
       <URange v-model="state.rating" />
     </UFormGroup>
 
-    <UButton type="submit">
-      Submit
-    </UButton>
+    <UButton type="submit"> Submit </UButton>
 
     <UButton variant="outline" class="ml-2" @click="form.clear()">
       Clear
