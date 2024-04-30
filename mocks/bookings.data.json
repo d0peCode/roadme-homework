@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "travelName": "Majestic Mallorca: Dive, Explore, and Soar",
+    "customerName": "Jan Nowak",
+    "customerEmail": "jan.nowak@gmail.com",
+    "paymentType": "PayPal",
+    "notes": "He wants diving"
+  },
+  {
+    "id": 2,
+    "travelName": "Zesty Zakynthos: Sun, Sea, Serenity, and Sea Turtles",
+    "customerName": "Jon Snow",
+    "customerEmail": "jon.snow@gmail.com",
+    "paymentType": "Card",
+    "notes": "He needs pickup from airport"
+  },
+  {
+    "id": 3,
+    "travelName": "Egyptian Odyssey: Pyramids, Pharaohs, Desert, and Marine Marvels",
+    "customerName": "Martha Bell",
+    "customerEmail": "martha.bell@gmail.com",
+    "paymentType": "Cash",
+    "notes": "She likes animals"
+  }
+]

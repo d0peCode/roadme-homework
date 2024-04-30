@@ -4,7 +4,7 @@ import type { Travel } from "@/types/travel";
 
 export default defineEventHandler(async (event: H3Event) => {
   const body = await readBody(event);
-  const mockDataPath = "./mocks/data.json";
+  const mockDataPath = "./mocks/travels.data.json";
   const db = JSON.parse(fs.readFileSync(mockDataPath, "utf8"));
   const indexToEdit = db.findIndex((e: Travel) => e.id === body.id);
   db[indexToEdit] = body;

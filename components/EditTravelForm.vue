@@ -21,7 +21,6 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  console.log("submit");
   try {
     await $fetch("/api/travel", {
       method: "PUT",

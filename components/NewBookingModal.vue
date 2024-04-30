@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ modalOpen: boolean }>();
-const isModalOpen = ref(false);
+const isModalOpen = defineModel<boolean>();
 
 const items = [
   {
@@ -18,12 +17,6 @@ const items = [
   },
 ];
 
-watch(
-  () => props.modalOpen,
-  (newVal: boolean) => {
-    isModalOpen.value = newVal;
-  },
-);
 </script>
 
 <template>
