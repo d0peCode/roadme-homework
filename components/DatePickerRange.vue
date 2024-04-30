@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { sub, format, isSameDay, add, type Duration } from 'date-fns'
 
+const emit = defineEmits<{ 'update:modelValue': { start: Date, end: Date } }>()
 const ranges = [
   { label: 'Next 7 days', duration: { days: 7 } },
   { label: 'Next 14 days', duration: { days: 14 } },
@@ -17,7 +18,12 @@ function isRangeSelected (duration: Duration) {
 
 function selectRange (duration: Duration) {
   selected.value = { start: new Date(), end: add(new Date(), duration) }
+  emit('update:modelValue', selected)
 }
+
+onMounted(() => {
+  emit('update:modelValue', selected)
+})
 </script>
 
 <template>
