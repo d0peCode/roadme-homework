@@ -4,7 +4,7 @@ interface Travel {
     description: string
     departureDate: Date
     returnDate: Date
-    pictureUrl: string
+    picture: string
 }
 
 export type { Travel }

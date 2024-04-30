@@ -4,11 +4,13 @@ import type { Travel } from '@/types/travel';
 const { data, refresh } = await useFetch<Travel[]>('/api/travel')
 
 const columns = [
-  { key: 'pictureUrl', label: 'Picture' }, 
+  { key: 'picture', label: 'Picture' }, 
   { key: 'name', label: 'Name of the travel' }, 
   { key: 'description', label: 'Description', }, 
   { key: 'departureDate', label: 'Date of departure' }, 
   { key: 'returnDate', label: 'Date of return' }, 
+  { key: 'price', label: 'Price per person' },
+  { key: 'rating', label: 'Avg. rating' },
   { key: 'actions' }
 ]
 
@@ -78,7 +80,7 @@ const filteredRows = computed(() => {
         :progress="{ color: 'primary', animation: 'carousel' }" 
     >
       <template #picture-data="{ row }">
-        {{ row }}
+        {{ row.picture }}
       </template>
       <template #name-data="{ row }">
         <p class="text-wrap">
@@ -88,6 +90,11 @@ const filteredRows = computed(() => {
       <template #description-data="{ row }">
         <p class="text-wrap">
            {{ row.description }}
+        </p>
+      </template> 
+      <template #rating-data="{ row }">
+        <p class="text-wrap">
+           {{ row.rating / 10 }} / 10
         </p>
       </template>
       <template #actions-data="{ row }">
