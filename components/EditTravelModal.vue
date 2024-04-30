@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const isModalOpen = defineModel()
 
+const props = defineProps<{ 'travel': void }>()
 const emit = defineEmits<{ 'travel-add': void }>()
 
 function newTravelAdded () {
   console.log('newTravelAdded')
   isModalOpen.value = false
-  emit('travel-add')  
+  emit('travel-add')
 }
 </script>
 

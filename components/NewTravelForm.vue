@@ -2,7 +2,7 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
-const emit = defineEmits('submit')
+const emit = defineEmits<{ 'travel-add': void }>()
 
 const state = reactive({
   name: undefined,
@@ -30,15 +30,12 @@ type Schema = z.infer<typeof schema>
 const form = ref()
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data)
-
   try {
     await $fetch('/api/travel', {
       method: "POST",
       body: event.data
-    })  
-    emit('submit')
+    })
+    emit('travel-add')
   } catch (err) {
     alert(`Error adding new travel ${err}`)
   }

@@ -3,24 +3,26 @@ import type { Travel } from '@/types/travel';
 
 const { data, refresh } = await useFetch<Travel[]>('/api/travel')
 
-const columns = [{
-  key: 'pictureUrl',
-  label: 'Picture'
-}, {
-  key: 'name',
-  label: 'Name of the travel'
-}, {
-  key: 'description',
-  label: 'Description',
-}, {
-  key: 'departureDate',
-  label: 'Date of departure'
-}, {
-  key: 'returnDate',
-  label: 'Date of return'
-}, 
+const columns = [
+  { key: 'pictureUrl', label: 'Picture' }, 
+  { key: 'name', label: 'Name of the travel' }, 
+  { key: 'description', label: 'Description', }, 
+  { key: 'departureDate', label: 'Date of departure' }, 
+  { key: 'returnDate', label: 'Date of return' }, 
   { key: 'actions' }
 ]
+
+const query = ref('')
+
+const isAddTravelModalOpen = ref(false)
+const isEditTravelModalOpen = ref(false)
+const isTableLoading = ref(false)
+const editTravelData = ref<Travel>()
+
+const editTravel = (travel: Travel) => {
+  editTravelData.value = travel
+  isEditTravelModalOpen.value = true
+}
 
 const removeTravel = async (id: number) => {
   try {
@@ -34,22 +36,17 @@ const removeTravel = async (id: number) => {
   }
 }
 
-const actions = (row: { id: number }) => [
+const actions = (row: Travel) => [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square-20-solid',
-    click: () => console.log('Edit', row.id)
+    click: () => editTravel(row)
   }], [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
     click: () => removeTravel(row.id)
   }]
 ]
-
-const query = ref('')
-
-const isAddTravelModalOpen = ref(false)
-const isTableLoading = ref(false)
 
 const filteredRows = computed(() => {
   if (!query.value) {
@@ -66,7 +63,8 @@ const filteredRows = computed(() => {
 
 <template>
   <div>
-    <NewTravelModal v-model="isAddTravelModalOpen" @submit="refresh" />
+    <NewTravelModal v-model="isAddTravelModalOpen" @travel-add="refresh" />
+    <EditTravelModal v-model="isEditTravelModalOpen" :travel="editTravelData" @travel-edit="refresh" />
     <div class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="query" placeholder="Filter travel..." />
       <UButton @click="isAddTravelModalOpen = true">Add new travel</UButton>
