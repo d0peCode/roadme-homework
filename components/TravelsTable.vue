@@ -74,14 +74,14 @@ const filteredRows = computed(() => {
   </div>
 
   <UTable
-      :rows="filteredRows"
-      :columns="columns"
-      :loading="isTableLoading"
-      :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-      :progress="{ color: 'primary', animation: 'carousel' }"
+    :rows="filteredRows"
+    :columns="columns"
+    :loading="isTableLoading"
+    :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+    :progress="{ color: 'primary', animation: 'carousel' }"
   >
     <template #picture-data="{ row }">
-      {{ row.picture }}
+      <img :src="row.picture" class="object-cover w-80 h-52" />
     </template>
     <template #dates.start-data="{ row }">
       {{ format(row.dates.start, 'd MMM, yyy') }}
