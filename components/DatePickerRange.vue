@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { sub, format, isSameDay, add, type Duration } from 'date-fns'
 
+const props = defineProps<{ modelValue?: { start: Date, end: Date } }>()
 const emit = defineEmits<{ 'update:modelValue': { start: Date, end: Date } }>()
+
 const ranges = [
   { label: 'Next 7 days', duration: { days: 7 } },
   { label: 'Next 14 days', duration: { days: 14 } },
@@ -10,7 +12,8 @@ const ranges = [
   { label: 'Next 6 months', duration: { months: 6 } },
   { label: 'Next year', duration: { years: 1 } }
 ]
-const selected = ref({ start: new Date(), end: add(new Date(), { days: 14 }) })
+
+const selected = ref(props.modelValue || { start: new Date(), end: add(new Date(), { days: 14 }) })
 
 function isRangeSelected (duration: Duration) {
   return isSameDay(selected.value.start, sub(new Date(), duration)) && isSameDay(selected.value.end, new Date())

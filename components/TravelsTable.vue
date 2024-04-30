@@ -95,7 +95,7 @@ const filteredRows = computed(() => {
       </p>
     </template>
     <template #description-data="{ row }">
-      <p class="text-wrap">
+      <p class="text-wrap break-words max-w-lg">
         {{ row.description }}
       </p>
     </template>

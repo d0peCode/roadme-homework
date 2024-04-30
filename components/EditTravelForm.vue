@@ -6,7 +6,7 @@ import type { Travel } from '@/types/travel';
 const props = defineProps<{ travel: Travel }>()
 const emit = defineEmits<{ 'travel-edit': () => void }>()
 
-const state = reactive(props.travel)
+const state = reactive({ ...props.travel })
 
 const schema = z.object({
   name: z.string().min(4),
