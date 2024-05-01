@@ -90,7 +90,7 @@ const filteredRows = computed(() => {
     :progress="{ color: 'primary', animation: 'carousel' }"
   >
     <template #picture-data="{ row }">
-      <img :src="row.picture" class="object-cover w-80 h-52" :alt="row.name"/>
+      <img :src="row.picture" class="object-cover w-80 h-52" :alt="row.name" />
     </template>
     <template #[`dates.start-data`]="{ row }">
       {{ format(row.dates.start, "d MMM, yyy") }}

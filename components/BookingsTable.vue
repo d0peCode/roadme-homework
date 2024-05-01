@@ -35,16 +35,6 @@ const removeBooking = async (id: number) => {
   }
 };
 
-const actions = (row: Booking) => [
-  [
-    {
-      label: "Delete",
-      icon: "i-heroicons-trash-20-solid",
-      click: () => removeBooking(row.id),
-    },
-  ],
-];
-
 const filteredRows = computed(() => {
   if (!query.value) {
     return props.bookings;
@@ -59,32 +49,32 @@ const filteredRows = computed(() => {
 </script>
 <template>
   <div
-      class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
+    class="flex justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
   >
     <UInput v-model="query" placeholder="Filter booking..." />
     <UButton @click="addBooking">Add new booking</UButton>
   </div>
 
   <UTable
-      :rows="filteredRows"
-      :columns="columns"
-      :loading="isTableLoading"
-      :loading-state="{
+    :rows="filteredRows"
+    :columns="columns"
+    :loading="isTableLoading"
+    :loading-state="{
       icon: 'i-heroicons-arrow-path-20-solid',
       label: 'Loading...',
     }"
-      :progress="{ color: 'primary', animation: 'carousel' }"
+    :progress="{ color: 'primary', animation: 'carousel' }"
   >
     <template #travelName-data="{ row }">
       {{ row.travelName.name }}
     </template>
     <template #actions-data="{ row }">
-        <UButton
-            color="gray"
-            variant="ghost"
-            icon="i-heroicons-trash-20-solid"
-            @click="removeBooking(row.id)"
-        />
+      <UButton
+        color="gray"
+        variant="ghost"
+        icon="i-heroicons-trash-20-solid"
+        @click="removeBooking(row.id)"
+      />
     </template>
   </UTable>
 </template>

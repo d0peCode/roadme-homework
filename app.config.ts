@@ -7,7 +7,7 @@ export default defineAppConfig({
     gray: "neutral",
     input: {
       default: {
-        size: 'md',
+        size: "md",
       },
     },
   },
