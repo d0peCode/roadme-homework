@@ -11,7 +11,7 @@ const initialState = {
   description: undefined,
   price: undefined,
   rating: undefined,
-}
+};
 
 const state = ref({ ...initialState });
 
@@ -30,8 +30,8 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 const clearForm = () => {
-  state.value = { ...initialState }
-}
+  state.value = { ...initialState };
+};
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
@@ -47,12 +47,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UForm
-    :schema="schema"
-    :state="state"
-    class="space-y-4"
-    @submit="onSubmit"
-  >
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup name="name" label="Name of the travel">
       <UInput v-model="state.name" />
     </UFormGroup>
@@ -83,8 +78,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UButton type="submit"> Submit </UButton>
 
-    <UButton variant="outline" class="ml-2" @click="clearForm">
-      Clear
-    </UButton>
+    <UButton variant="outline" class="ml-2" @click="clearForm"> Clear </UButton>
   </UForm>
 </template>

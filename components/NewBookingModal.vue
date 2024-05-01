@@ -25,7 +25,7 @@ const tabs = [
   },
 ];
 
-const bookingForm = reactive({
+const initialState = {
   id: undefined,
   travelName: undefined,
   customerName: undefined,
@@ -35,7 +35,9 @@ const bookingForm = reactive({
   customerGender: undefined,
   paymentType: undefined,
   notes: undefined,
-});
+};
+
+const bookingForm = ref({ ...initialState });
 
 const schema = z.object({
   customerName: z.string().min(1),
@@ -111,8 +113,9 @@ async function onSubmit() {
   try {
     await $fetch("/api/booking", {
       method: "POST",
-      body: bookingForm,
+      body: bookingForm.value,
     });
+    bookingForm.value = { ...initialState };
     isModalOpen.value = false;
     emit("booking-add");
   } catch (err) {
@@ -148,6 +151,7 @@ const travelsOptions = computed(() => {
             </template>
 
             <div v-if="item.key === 'relatedTravel'" class="space-y-3">
+              {{ bookingForm }}
               <UForm :state="bookingForm" @submit="goToNextTab">
                 <USelectMenu
                   v-model="bookingForm.travelName"
