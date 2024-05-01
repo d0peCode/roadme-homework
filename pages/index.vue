@@ -13,7 +13,6 @@
     <ul class="list-disc ml-6">
       <li>Eslit</li>
       <li>Prettier</li>
-      <li>Husky</li>
     </ul>
     <p>Use navigation bar on top to check out two available pages.</p>
     <p>I hope you like it! :)</p>

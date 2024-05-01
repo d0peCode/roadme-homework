@@ -5,5 +5,10 @@ export default defineAppConfig({
   ui: {
     primary: "lime",
     gray: "neutral",
+    input: {
+      default: {
+        size: 'md',
+      },
+    },
   },
 });

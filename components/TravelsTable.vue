@@ -90,7 +90,7 @@ const filteredRows = computed(() => {
     :progress="{ color: 'primary', animation: 'carousel' }"
   >
     <template #picture-data="{ row }">
-      <img :src="row.picture" class="object-cover w-80 h-52" />
+      <img :src="row.picture" class="object-cover w-80 h-52" :alt="row.name"/>
     </template>
     <template #[`dates.start-data`]="{ row }">
       {{ format(row.dates.start, "d MMM, yyy") }}
@@ -107,6 +107,9 @@ const filteredRows = computed(() => {
       <p class="text-wrap break-words max-w-lg">
         {{ row.description }}
       </p>
+    </template>
+    <template #price-data="{ row }">
+      <p>{{ row.price }} EUR</p>
     </template>
     <template #rating-data="{ row }">
       <p class="text-wrap">{{ row.rating / 10 }} / 10</p>

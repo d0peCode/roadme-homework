@@ -15,7 +15,7 @@ const state = reactive({
 
 const schema = z.object({
   name: z.string().min(4),
-  picture: z.string().min(1),
+  picture: z.string().url(),
   dates: z.object({
     start: z.date(),
     end: z.date(),
@@ -67,7 +67,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </UFormGroup>
 
     <UFormGroup name="price" label="Price per person">
-      <UInput v-model.number="state.price">
+      <UInput v-model.number="state.price" type="number">
         <template #trailing>
           <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
         </template>

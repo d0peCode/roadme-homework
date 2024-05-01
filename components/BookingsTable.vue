@@ -5,7 +5,6 @@ const props = defineProps<{ bookings: Booking[] }>();
 const emit = defineEmits<{
   "booking-add": () => void;
   "booking-remove": () => void;
-  "booking-edit": (booking: Booking) => void;
 }>();
 
 const columns = [
@@ -24,10 +23,6 @@ const addBooking = () => {
   emit("booking-add");
 };
 
-const editBooking = (booking: Booking) => {
-  emit("booking-edit", booking);
-};
-
 const removeBooking = async (id: number) => {
   try {
     await $fetch("/api/booking", {
@@ -41,13 +36,6 @@ const removeBooking = async (id: number) => {
 };
 
 const actions = (row: Booking) => [
-  [
-    {
-      label: "Edit",
-      icon: "i-heroicons-pencil-square-20-solid",
-      click: () => editBooking(row),
-    },
-  ],
   [
     {
       label: "Delete",
@@ -87,14 +75,16 @@ const filteredRows = computed(() => {
     }"
       :progress="{ color: 'primary', animation: 'carousel' }"
   >
+    <template #travelName-data="{ row }">
+      {{ row.travelName.name }}
+    </template>
     <template #actions-data="{ row }">
-      <UDropdown :items="actions(row)">
         <UButton
             color="gray"
             variant="ghost"
-            icon="i-heroicons-ellipsis-horizontal-20-solid"
+            icon="i-heroicons-trash-20-solid"
+            @click="removeBooking(row.id)"
         />
-      </UDropdown>
     </template>
   </UTable>
 </template>
