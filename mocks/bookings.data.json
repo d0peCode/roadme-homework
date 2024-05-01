@@ -1,20 +1,6 @@
 [
   {
     "travelName": {
-      "id": 1,
-      "name": "Egyptian Odyssey: Pyramids, Pharaohs, Desert, and Marine Marvels"
-    },
-    "customerName": "name",
-    "customerEmail": "name@gmail.com",
-    "customerPhone": 121,
-    "customerAge": 2222,
-    "customerGender": "Female",
-    "paymentType": "revolut",
-    "notes": "sssssssssssssssssssssssssssss\ns\ns\ns\ns\ns\n\nss\n\ns\ns\ns\ns\ns\ns\ns\n\ns\ns\ns\ns\ns\ns\ns\ns\n\ns\ns\ns\ns\ns\ns\ns\ns\ns\n\ns\ns\ns\ns\ns\ns\ns\ns",
-    "id": 1714554679
-  },
-  {
-    "travelName": {
       "id": 2,
       "name": "Majestic Mallorca: Dive, Explore, and Soar"
     },
