@@ -6,7 +6,7 @@ import type { Travel } from "@/types/travel";
 const props = defineProps<{ travel: Travel }>();
 const emit = defineEmits<{ "travel-edit": () => void }>();
 
-const state = reactive({ ...props.travel });
+const state = ref({ ...props.travel });
 
 const schema = z.object({
   name: z.string().min(4),
@@ -18,7 +18,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-const form = ref();
+const resetForm = () => {
+  state.value = { ...props.travel }
+}
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
@@ -35,7 +37,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UForm
-    ref="form"
     :schema="schema"
     :state="state"
     class="space-y-4"
@@ -71,8 +72,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UButton type="submit"> Submit </UButton>
 
-    <UButton variant="outline" class="ml-2" @click="form.clear()">
-      Clear
+    <UButton variant="outline" class="ml-2" @click="resetForm">
+      Reset
     </UButton>
   </UForm>
 </template>

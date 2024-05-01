@@ -4,14 +4,16 @@ import type { FormSubmitEvent } from "#ui/types";
 
 const emit = defineEmits<{ "travel-add": () => void }>();
 
-const state = reactive({
+const initialState = {
   name: undefined,
   picture: undefined,
   dates: undefined,
   description: undefined,
   price: undefined,
   rating: undefined,
-});
+}
+
+const state = ref({ ...initialState });
 
 const schema = z.object({
   name: z.string().min(4),
@@ -27,7 +29,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-const form = ref();
+const clearForm = () => {
+  state.value = { ...initialState }
+}
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
@@ -44,7 +48,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UForm
-    ref="form"
     :schema="schema"
     :state="state"
     class="space-y-4"
@@ -80,7 +83,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UButton type="submit"> Submit </UButton>
 
-    <UButton variant="outline" class="ml-2" @click="form.clear()">
+    <UButton variant="outline" class="ml-2" @click="clearForm">
       Clear
     </UButton>
   </UForm>
