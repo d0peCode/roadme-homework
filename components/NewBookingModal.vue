@@ -7,14 +7,9 @@ const emit = defineEmits<{ "booking-add": () => void }>();
 
 const isModalOpen = defineModel<boolean>();
 
-
-const initialState = {
-  id: undefined,
-};
-
 const initialStateRelatedTravel = {
   travelName: undefined,
-}
+};
 
 const initialStateCustomerInfo = {
   customerName: undefined,
@@ -22,12 +17,12 @@ const initialStateCustomerInfo = {
   customerPhone: undefined,
   customerAge: undefined,
   customerGender: undefined,
-}
+};
 
 const initialStatePaymentType = {
   paymentType: undefined,
   notes: undefined,
-}
+};
 
 const bookingFormRelatedTravel = ref({ ...initialStateRelatedTravel });
 const bookingFormCustomerInfo = ref({ ...initialStateCustomerInfo });
@@ -36,9 +31,9 @@ const bookingFormPaymentType = ref({ ...initialStatePaymentType });
 const schemaRelatedTravel = z.object({
   travelName: z.object({
     id: z.number(),
-    name: z.string().min(1)
-  })
-})
+    name: z.string().min(1),
+  }),
+});
 
 const schemaCustomerInfo = z.object({
   customerName: z.string().min(1),
@@ -49,9 +44,9 @@ const schemaCustomerInfo = z.object({
     .positive({ message: "Please provide a valid customer age" }),
 });
 
-const schemaPaymentType =  z.object({
-  paymentType: z.string().min(1)
-})
+const schemaPaymentType = z.object({
+  paymentType: z.string().min(1),
+});
 
 const tabs = computed(() => [
   {
@@ -63,13 +58,15 @@ const tabs = computed(() => [
     key: "customerInfo",
     label: "Customer info",
     description: "Provide customer info",
-    disabled: !schemaRelatedTravel.safeParse(bookingFormRelatedTravel.value).success
+    disabled: !schemaRelatedTravel.safeParse(bookingFormRelatedTravel.value)
+      .success,
   },
   {
     key: "paymentType",
     label: "Payment type",
     description: "Select payment type",
-    disabled: !schemaCustomerInfo.safeParse(bookingFormCustomerInfo.value).success
+    disabled: !schemaCustomerInfo.safeParse(bookingFormCustomerInfo.value)
+      .success,
   },
 ]);
 
@@ -108,7 +105,9 @@ const router = useRouter();
 
 const selectedTab = computed({
   get() {
-    const index = tabs.value.findIndex((item) => item.label === route.query.tab);
+    const index = tabs.value.findIndex(
+      (item) => item.label === route.query.tab,
+    );
     if (index === -1) {
       return 0;
     }
@@ -141,7 +140,7 @@ async function onSubmit() {
       body: {
         ...bookingFormRelatedTravel.value,
         ...bookingFormCustomerInfo.value,
-        ...bookingFormPaymentType.value
+        ...bookingFormPaymentType.value,
       },
     });
     bookingFormRelatedTravel.value = ref({ ...initialStateRelatedTravel });
@@ -182,10 +181,10 @@ const travelsOptions = computed(() => {
             </template>
 
             <div v-if="item.key === 'relatedTravel'" class="space-y-3">
-              <UForm 
-                  :state="bookingFormRelatedTravel" 
-                  :schema="schemaRelatedTravel"
-                  @submit="goToNextTab"
+              <UForm
+                :state="bookingFormRelatedTravel"
+                :schema="schemaRelatedTravel"
+                @submit="goToNextTab"
               >
                 <USelectMenu
                   v-model="bookingFormRelatedTravel.travelName"
@@ -267,7 +266,11 @@ const travelsOptions = computed(() => {
             </div>
 
             <div v-else-if="item.key === 'paymentType'" class="space-y-3">
-              <UForm :state="bookingFormPaymentType" :schema="schemaPaymentType" @submit="onSubmit">
+              <UForm
+                :state="bookingFormPaymentType"
+                :schema="schemaPaymentType"
+                @submit="onSubmit"
+              >
                 <UFormGroup label="Payment type" name="paymentType" required>
                   <USelect
                     v-model="bookingFormPaymentType.paymentType"
