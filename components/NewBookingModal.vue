@@ -7,7 +7,53 @@ const emit = defineEmits<{ "booking-add": () => void }>();
 
 const isModalOpen = defineModel<boolean>();
 
-const tabs = [
+
+const initialState = {
+  id: undefined,
+};
+
+const initialStateRelatedTravel = {
+  travelName: undefined,
+}
+
+const initialStateCustomerInfo = {
+  customerName: undefined,
+  customerEmail: undefined,
+  customerPhone: undefined,
+  customerAge: undefined,
+  customerGender: undefined,
+}
+
+const initialStatePaymentType = {
+  paymentType: undefined,
+  notes: undefined,
+}
+
+const bookingFormRelatedTravel = ref({ ...initialStateRelatedTravel });
+const bookingFormCustomerInfo = ref({ ...initialStateCustomerInfo });
+const bookingFormPaymentType = ref({ ...initialStatePaymentType });
+
+const schemaRelatedTravel = z.object({
+  travelName: z.object({
+    id: z.number(),
+    name: z.string().min(1)
+  })
+})
+
+const schemaCustomerInfo = z.object({
+  customerName: z.string().min(1),
+  customerEmail: z.string().email(),
+  customerPhone: z.number(),
+  customerAge: z
+    .number()
+    .positive({ message: "Please provide a valid customer age" }),
+});
+
+const schemaPaymentType =  z.object({
+  paymentType: z.string().min(1)
+})
+
+const tabs = computed(() => [
   {
     key: "relatedTravel",
     label: "Related travel",
@@ -17,36 +63,15 @@ const tabs = [
     key: "customerInfo",
     label: "Customer info",
     description: "Provide customer info",
+    disabled: !schemaRelatedTravel.safeParse(bookingFormRelatedTravel.value).success
   },
   {
     key: "paymentType",
     label: "Payment type",
     description: "Select payment type",
+    disabled: !schemaCustomerInfo.safeParse(bookingFormCustomerInfo.value).success
   },
-];
-
-const initialState = {
-  id: undefined,
-  travelName: undefined,
-  customerName: undefined,
-  customerEmail: undefined,
-  customerPhone: undefined,
-  customerAge: undefined,
-  customerGender: undefined,
-  paymentType: undefined,
-  notes: undefined,
-};
-
-const bookingForm = ref({ ...initialState });
-
-const schema = z.object({
-  customerName: z.string().min(1),
-  customerEmail: z.string().email(),
-  customerPhone: z.number(),
-  customerAge: z
-    .number()
-    .positive({ message: "Please provide a valid customer age" }),
-});
+]);
 
 const paymentTypes = [
   {
@@ -83,7 +108,7 @@ const router = useRouter();
 
 const selectedTab = computed({
   get() {
-    const index = tabs.findIndex((item) => item.label === route.query.tab);
+    const index = tabs.value.findIndex((item) => item.label === route.query.tab);
     if (index === -1) {
       return 0;
     }
@@ -91,14 +116,14 @@ const selectedTab = computed({
     return index;
   },
   set(value) {
-    router.replace({ query: { tab: tabs[value].label } });
+    router.replace({ query: { tab: tabs.value[value].label } });
   },
 });
 
 const goToNextTab = () => {
-  const nextIndex = (selectedTab.value + 1) % tabs.length;
+  const nextIndex = (selectedTab.value + 1) % tabs.value.length;
   selectedTab.value = nextIndex;
-  router.replace({ query: { tab: tabs[nextIndex].label } });
+  router.replace({ query: { tab: tabs.value[nextIndex].label } });
 };
 
 watch(isModalOpen, (newValue) => {
@@ -113,9 +138,15 @@ async function onSubmit() {
   try {
     await $fetch("/api/booking", {
       method: "POST",
-      body: bookingForm.value,
+      body: {
+        ...bookingFormRelatedTravel.value,
+        ...bookingFormCustomerInfo.value,
+        ...bookingFormPaymentType.value
+      },
     });
-    bookingForm.value = { ...initialState };
+    bookingFormRelatedTravel.value = ref({ ...initialStateRelatedTravel });
+    bookingFormCustomerInfo.value = ref({ ...initialStateCustomerInfo });
+    bookingFormPaymentType.value = ref({ ...initialStatePaymentType });
     isModalOpen.value = false;
     emit("booking-add");
   } catch (err) {
@@ -138,7 +169,7 @@ const travelsOptions = computed(() => {
     <div class="p-4">
       <UTabs v-model="selectedTab" :items="tabs" class="w-full">
         <template #item="{ item }">
-          <UCard @submit.prevent="() => onSubmit(bookingForm)">
+          <UCard>
             <template #header>
               <p
                 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -151,10 +182,13 @@ const travelsOptions = computed(() => {
             </template>
 
             <div v-if="item.key === 'relatedTravel'" class="space-y-3">
-              {{ bookingForm }}
-              <UForm :state="bookingForm" @submit="goToNextTab">
+              <UForm 
+                  :state="bookingFormRelatedTravel" 
+                  :schema="schemaRelatedTravel"
+                  @submit="goToNextTab"
+              >
                 <USelectMenu
-                  v-model="bookingForm.travelName"
+                  v-model="bookingFormRelatedTravel.travelName"
                   searchable
                   searchable-placeholder="Search a travel..."
                   class="w-full lg:w-48"
@@ -171,13 +205,13 @@ const travelsOptions = computed(() => {
 
             <div v-else-if="item.key === 'customerInfo'" class="space-y-3">
               <UForm
-                :schema="schema"
-                :state="bookingForm"
+                :schema="schemaCustomerInfo"
+                :state="bookingFormCustomerInfo"
                 @submit="goToNextTab"
               >
                 <UFormGroup label="Customer name" name="customerName" required>
                   <UInput
-                    v-model="bookingForm.customerName"
+                    v-model="bookingFormCustomerInfo.customerName"
                     type="text"
                     required
                   />
@@ -189,7 +223,7 @@ const travelsOptions = computed(() => {
                   required
                 >
                   <UInput
-                    v-model="bookingForm.customerEmail"
+                    v-model="bookingFormCustomerInfo.customerEmail"
                     type="email"
                     required
                   />
@@ -201,7 +235,7 @@ const travelsOptions = computed(() => {
                   required
                 >
                   <UInput
-                    v-model="bookingForm.customerPhone"
+                    v-model="bookingFormCustomerInfo.customerPhone"
                     type="number"
                     required
                   />
@@ -209,7 +243,7 @@ const travelsOptions = computed(() => {
 
                 <UFormGroup label="Customer age" name="customerAge" required>
                   <UInput
-                    v-model="bookingForm.customerAge"
+                    v-model="bookingFormCustomerInfo.customerAge"
                     type="number"
                     required
                   />
@@ -221,7 +255,7 @@ const travelsOptions = computed(() => {
                   required
                 >
                   <USelect
-                    v-model="bookingForm.customerGender"
+                    v-model="bookingFormCustomerInfo.customerGender"
                     :options="genders"
                     option-attribute="name"
                     required
@@ -233,10 +267,10 @@ const travelsOptions = computed(() => {
             </div>
 
             <div v-else-if="item.key === 'paymentType'" class="space-y-3">
-              <UForm :state="bookingForm" @submit="onSubmit">
+              <UForm :state="bookingFormPaymentType" :schema="schemaPaymentType" @submit="onSubmit">
                 <UFormGroup label="Payment type" name="paymentType" required>
                   <USelect
-                    v-model="bookingForm.paymentType"
+                    v-model="bookingFormPaymentType.paymentType"
                     :options="paymentTypes"
                     option-attribute="name"
                     required
@@ -244,7 +278,7 @@ const travelsOptions = computed(() => {
                 </UFormGroup>
 
                 <UFormGroup label="Notes" name="notes">
-                  <UTextarea v-model="bookingForm.notes" />
+                  <UTextarea v-model="bookingFormPaymentType.notes" />
                 </UFormGroup>
 
                 <UButton type="submit" class="mt-4"> Save booking </UButton>
