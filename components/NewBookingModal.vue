@@ -45,8 +45,7 @@ const schemaCustomerInfo = z.object({
 });
 
 const schemaPaymentType = z.object({
-  paymentType: z.string().min(1),
-  notes: z.string().max(1000),
+  paymentType: z.string().min(1)
 });
 
 const tabs = computed(() => [
