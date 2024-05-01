@@ -36,8 +36,8 @@ const schemaRelatedTravel = z.object({
 });
 
 const schemaCustomerInfo = z.object({
-  customerName: z.string().min(1),
-  customerEmail: z.string().email(),
+  customerName: z.string().min(1).max(100),
+  customerEmail: z.string().email().max(100),
   customerPhone: z.number(),
   customerAge: z
     .number()
@@ -46,6 +46,7 @@ const schemaCustomerInfo = z.object({
 
 const schemaPaymentType = z.object({
   paymentType: z.string().min(1),
+  notes: z.string().max(1000),
 });
 
 const tabs = computed(() => [
@@ -196,6 +197,7 @@ const travelsOptions = computed(() => {
                   option-attribute="name"
                   by="id"
                   required
+                  clear-search-on-close
                 />
 
                 <UButton type="submit" class="mt-4"> Next </UButton>
@@ -281,7 +283,11 @@ const travelsOptions = computed(() => {
                 </UFormGroup>
 
                 <UFormGroup label="Notes" name="notes">
-                  <UTextarea v-model="bookingFormPaymentType.notes" />
+                  <UTextarea
+                    v-model="bookingFormPaymentType.notes"
+                    rows="10"
+                    maxrows="10"
+                  />
                 </UFormGroup>
 
                 <UButton type="submit" class="mt-4"> Save booking </UButton>

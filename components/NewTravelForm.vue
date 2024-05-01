@@ -16,14 +16,14 @@ const initialState = {
 const state = ref({ ...initialState });
 
 const schema = z.object({
-  name: z.string().min(4),
+  name: z.string().min(4).max(100),
   picture: z.string().url(),
   dates: z.object({
     start: z.date(),
     end: z.date(),
   }),
-  description: z.string().min(10),
-  price: z.number(),
+  description: z.string().min(10).max(1000),
+  price: z.number().max(1000000),
   rating: z.number(),
 });
 
@@ -61,7 +61,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </UFormGroup>
 
     <UFormGroup name="description" label="Description">
-      <UTextarea v-model="state.description" />
+      <UTextarea v-model="state.description" rows="10" maxrows="10" />
     </UFormGroup>
 
     <UFormGroup name="price" label="Price per person">
