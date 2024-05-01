@@ -75,6 +75,7 @@ const genders = [
     value: "Other",
   },
 ];
+
 const route = useRoute();
 const router = useRouter();
 
@@ -130,7 +131,6 @@ const travelsOptions = computed(() => {
 </script>
 
 <template>
-  <!--  <UModal v-model="isModalOpen" :prevent-close="shouldPreventClose()">-->
   <UModal v-model="isModalOpen">
     <div class="p-4">
       <UTabs v-model="selectedTab" :items="tabs" class="w-full">
